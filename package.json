@@ -1,0 +1,26 @@
+{
+  "name": "aoc-2023",
+  "version": "1.0.0",
+  "description": "Advent of Code 2023, let's do this!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickheyer/AOC-2023.git"
+  },
+  "keywords": [
+    "aoc"
+  ],
+  "author": "Nicholas Heyer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nickheyer/AOC-2023/issues"
+  },
+  "homepage": "https://github.com/nickheyer/AOC-2023#readme",
+  "dependencies": {
+    "dedent": "^1.5.1",
+    "lodash": "^4.17.21"
+  }
+}
