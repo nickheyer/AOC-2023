@@ -1,38 +1,28 @@
-const fs = require('fs').promises;
-const dedent = require('dedent');
-const _ = require('lodash');
+async function partOne() {
+  const inputText = `1abc2
+  pqr3stu8vwx
+  a1b2c3d4e5f
+  treb7uchet`;
 
-async function getInput(sample) {
-  const sampleText = dedent`
-  two1nine
+  const inputArr = inputText.split('\n');
+  const inputDigits = inputArr.map((line) => {
+    const first = Array.from(line).find(Number);
+    const last = Array.from(line).findLast(Number);
+    const total = `${first}${last}`;
+    return Number.parseInt(total);
+  });
+  return inputDigits.reduce((sum, num) => num + sum);
+}
+
+async function partTwo() {
+  const inputText = `two1nine
   eightwothree
   abcone2threexyz
   xtwone3four
   4nineeightseven2
   zoneight234
-  7pqrstsixteen
-  `;
+  7pqrstsixteen`;
 
-  if (sample) {
-    return sampleText;
-  }
-
-  return await fs.readFile(`${__dirname}/input.txt`, 'utf-8');
-}
-
-async function partOne(sample = false) {
-  const inputText = await getInput(sample);
-  const inputArr = inputText.split('\n');
-  const inputDigits = inputArr.map((line) => {
-    const first = _.find(line, Number);
-    const last = _.findLast(line, Number);
-    return _.toInteger(`${first}${last}`);
-  });
-  return _.sum(inputDigits);
-}
-
-async function partTwo(sample = false) {
-  const inputText = await getInput(sample);
   const inputArr = inputText.split('\n');
   const digitMap = {
     'one': 1,
@@ -51,16 +41,18 @@ async function partTwo(sample = false) {
     while (x < line.length && (!first || !last)) {
       let startLn = line.slice(0, ++x);
       let endLn = line.slice(y--);
-      _.forIn(digitMap, (digit, alph) => {
+
+      for (const alph in digitMap) {
+        const digit = digitMap[alph];
         startLn = startLn.replace(alph, digit);
         endLn = endLn.replace(alph, digit);
-      })
-      first = first || _.find(startLn, Number);
-      last = last || _.find(endLn, Number);
+      }
+      first = first || Array.from(startLn).find(Number);
+      last = last || Array.from(endLn).find(Number);
     }
-    return _.toInteger(`${first}${last}`);
+    return Number.parseInt(`${first}${last}`);
   });
-  return _.sum(inputDigits);
+  return inputDigits.reduce((sum, num) => num + sum);
 }
 
 async function main() {
