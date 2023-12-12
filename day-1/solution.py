@@ -37,7 +37,6 @@ def get_input(sample=False):
   return parsed_input
 
 def part_one(inp):
-  
   sum_of_ids = 0
 
   for id, game in enumerate(inp):
