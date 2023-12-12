@@ -59,7 +59,7 @@ def part_one(inp):
 def part_two(inp):
   sum_of_powers = 0
 
-  for _, game in enumerate(inp):
+  for game in inp:
     totals = { 'red': 0, 'green': 0, 'blue': 0 }
     for round in game:
       for color, cubes in round.items():
