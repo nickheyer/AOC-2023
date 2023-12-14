@@ -37,7 +37,7 @@ async function getInput(sample) {
 }
 
 function findWinners(cards) {
-  return cards.map((card, i) => {
+  return cards.map((card) => {
     const winnerNums = _.intersection(card[0], card[1]);
     return _.reduce(
       winnerNums,
@@ -53,13 +53,24 @@ async function partOne(input) {
 }
 
 async function partTwo(input) {
-  const winners = findWinners(input);
-  return _.sum(winners);
+  const rounds = input.map(() => 1);
+  input.forEach((card, i) => {
+    const cardsRounds = rounds[i];
+    const copiesWon = _.intersection(...card);
+    rounds.forEach((_, ind) => {
+      if (ind > copiesWon.length + i) {
+        return false;
+      } else if (ind > i) {
+        rounds[ind] += cardsRounds;
+      }
+    });
+  })
 
+  return _.sum(rounds);
 }
 
 async function main() {
-  const promptInput = await getInput(true);
+  const promptInput = await getInput();
   const partOneAnswer = await partOne(promptInput);
   const partTwoAnswer = await partTwo(promptInput);
   return `
