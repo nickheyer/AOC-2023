@@ -4,16 +4,11 @@ import math
 DAY_DIR = os.path.dirname(os.path.realpath(__file__))
 INPUT_FILE = os.path.join(DAY_DIR, 'input.txt')
 
-SAMPLE_TEXT = '''467..114..
-...*......
-..35..633.
-......#...
-617*......
-.....+.58.
-..592.....
-......755.
-...$.*....
-.664.598..'''
+SAMPLE_TEXT = '''Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green'''
 
 def read_input(sample=False):
   if sample:
@@ -21,64 +16,58 @@ def read_input(sample=False):
   else:
     with open(INPUT_FILE, 'r') as fp:
       return fp.readlines()
+  
+def parse_input(input_text):
+  games = []
+
+  for line in input_text:
+    _, game_set = line.split(': ')
+    round_sets = game_set.split(';')
+    rounds = []
+    for round in round_sets:
+      round_set = round.strip().split(', ')
+      rounds.append({ color: int(cubes) for cubes, color in (r.split(' ') for r in round_set)})
+    games.append(rounds)
+
+  return games
 
 def get_input(sample=False):
-  return read_input(sample)
+  input_text = read_input(sample)
+  parsed_input = parse_input(input_text)
+  return parsed_input
 
 def part_one(inp):
-  sum_of_parts = 0
+  sum_of_ids = 0
 
-  for y, row in enumerate(inp):
-    num_buffer = num_start = ''
-    for x, char in enumerate(row):
-      if (not char.isalnum() or x == len(row) - 1) and num_buffer:
-        # GENERATE RANGE OF 2D INDEXES
-        x_min, x_max = (max(num_start - 1, 0), min(x + 1, len(row)))
-        y_min, y_max = (max(y - 1, 0), min(y + 2, len(inp)))
-        row_slice = inp[y_min:y_max]
-        for row in row_slice:
-          col_slice = row[x_min:x_max]
-          sp_chars = "'\"!@#$%^&*()-+?_\=,<>/\"'"
-          if any(char in sp_chars for char in col_slice):
-            sum_of_parts += int(num_buffer)
-            break
-        num_buffer = num_start = ''
-      elif char.isdigit():
-        if not num_start:
-          num_start = x
-        num_buffer += char
-  return sum_of_parts
-
+  for id, game in enumerate(inp):
+    possible = True
+    for round in game:
+      totals = { 'red': 12, 'green': 13, 'blue': 14 }
+      for color, cubes in round.items():
+        totals[color] -= cubes
+        if totals[color] < 0:
+          possible = False
+          break
+      if not possible:
+        break
+    if possible:
+      sum_of_ids += id + 1
+  
+  return sum_of_ids
+      
 
 def part_two(inp):
-  gear_locs = {}
+  sum_of_powers = 0
 
-  for y, row in enumerate(inp):
-    num_buffer = num_start = ''
-    for x, char in enumerate(row):
-      if (not char.isalnum() or x == len(row) - 1) and num_buffer:
-        x_min, x_max = (max(num_start - 1, 0), min(x + 1, len(row)))
-        y_min, y_max = (max(y - 1, 0), min(y + 2, len(inp)))
-        row_slice = inp[y_min:y_max]
-        for row in row_slice:
-          col_slice = row[x_min:x_max]
-          found_gear = col_slice.find('*')
-          if found_gear >= 0:
-              # HASHING COORDS
-              coords = f'{found_gear + x_min}/{y_min}'
-              if not gear_locs.get(coords):
-                gear_locs[coords] = [int(num_buffer)]
-              else:
-                gear_locs[coords].append(int(num_buffer))
-          y_min += 1
-        num_buffer = num_start = ''
-      elif char.isdigit():
-        if not num_start:
-          num_start = x
-        num_buffer += char
+  for game in inp:
+    totals = { 'red': 0, 'green': 0, 'blue': 0 }
+    for round in game:
+      for color, cubes in round.items():
+        if totals[color] < cubes:
+          totals[color] = cubes
+    sum_of_powers += math.prod(totals.values())
 
-  return sum(math.prod(nums) for nums in gear_locs.values() if len(nums) == 2)
-
+  return sum_of_powers
 
 def main():
   inp = get_input()

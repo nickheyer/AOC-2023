@@ -8,6 +8,6 @@ npm install
 node index.js <?day-number> # Start the runner
 ```
 
-Then provide the day (zero-indexed), and press enter.
+Then provide the day (no longer zero-indexed), and press enter.
 
 Merry Xmas!
