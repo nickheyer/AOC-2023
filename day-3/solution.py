@@ -38,8 +38,7 @@ def part_one(inp):
         row_slice = inp[y_min:y_max]
         for row in row_slice:
           col_slice = row[x_min:x_max]
-          sp_chars = "'\"!@#$%^&*()-+?_\=,<>/\"'"
-          if any(char in sp_chars for char in col_slice):
+          if any((char != '.' and not char.isalnum()) for char in col_slice):
             sum_of_parts += int(num_buffer)
             break
         num_buffer = num_start = ''

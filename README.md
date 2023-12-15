@@ -5,9 +5,7 @@ To run the solution for a day against that day's input, run the following in the
 
 ```bash
 npm install
-node index.js <?day-number> # Start the runner
+npm test <?day-number> # Optionally, provide the day number
 ```
-
-Then provide the day (no longer zero-indexed), and press enter.
 
 Merry Xmas!

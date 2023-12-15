@@ -2,9 +2,9 @@
   "name": "aoc-2023",
   "version": "1.0.0",
   "description": "Advent of Code 2023, let's do this!",
-  "main": "index.js",
+  "main": "runner.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./runner.js"
   },
   "repository": {
     "type": "git",
