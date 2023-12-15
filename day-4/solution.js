@@ -81,5 +81,5 @@ async function main() {
 }
 
 main()
-.then((stdout) => console.log(stdout))
-.catch((stderr) => console.error(stderr));
+.then(console.log)
+.catch(console.error);

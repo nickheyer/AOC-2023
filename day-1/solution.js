@@ -69,15 +69,16 @@ async function partTwo(input) {
 }
 
 async function main() {
-  try {
-    const promptInput = await getInput(true);
-    const partOneAnswer = await partOne(promptInput);
-    const partTwoAnswer = await partTwo(promptInput);
-    return `The answer for part one is:\n${partOneAnswer}\n\nThe answer for part two is:\n${partTwoAnswer}`;
-  } catch (err) {
-    return `Encountered an error while chasing after the advent of code elves...:\n${err}`;
-  }
+  const promptInput = await getInput(true);
+  const partOneAnswer = await partOne(promptInput);
+  const partTwoAnswer = await partTwo(promptInput);
+  return `
+  The answer for part one is:
+  ${partOneAnswer}
+  The answer for part two is:
+  ${partTwoAnswer}`;
 }
 
 main()
-.then(stdout => console.log(stdout));
+.then(console.log)
+.catch(console.error);
